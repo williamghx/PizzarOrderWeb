@@ -11,29 +11,6 @@ import Store from "./Components/Store";
 
 
 function App() {
-  // const { token, expiry, setToken, setExpiry } = useAuth();
-  // const { stores, selectedStore, setStores, setSelectedStore } = useStores();
-
-    // const loadData = useCallback(async() => {
-    //     let stores;
-    //     if(token === null){
-    //         let tokenRes = await (await GetToken()).json();
-    //         setToken(tokenRes.token);
-
-    //         stores = await (await GetStores(tokenRes.token)).json();
-    //     }
-    //     else{
-    //         stores = await (await GetStores(token)).json();
-    //     }
-    //     console.log(stores);
-    //     setStores(stores);
-        
-    // }, []);
-
-    // useEffect(() => {
-    //     loadData().catch(console.error);
-    // }, [loadData]);
-
   return (
     <div>
       <nav className="navbar">
