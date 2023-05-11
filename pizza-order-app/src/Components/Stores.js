@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { useDataContext } from '../Contexts/DataContext';
 
-const Admin = () => {
+const Stores = () => {
     
     const { stores, fetchStores } = useDataContext();
 
@@ -13,10 +13,11 @@ const Admin = () => {
     return (
         <div className="container">
             <h1>
-                Manage Stores
+                Stores
             </h1>
             <ul>
             {
+                
                 stores.map(store => (
                     <li key={store.id}>
                         <Link className="nav-link" to={String(store.id)}>{store.name}</Link>
@@ -24,10 +25,9 @@ const Admin = () => {
                 ))
             }
             </ul>
-            <button>Add New Store</button>
-            {/* <Outlet /> */}
+            <Outlet />
         </div>
     );
 }
 
-export default Admin;
+export default Stores;
