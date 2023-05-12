@@ -6,8 +6,11 @@ export const useDataContext = () => useContext(DataContext);
 
 const DataContextProvider = (props) => {
     const [token, setToken] = useState(null);
+    const [states, setStates] = useState([]);
+    const [streetTypes, setStreetTypes] = useState([]);
     const [stores, setStores] = useState([]);
     const [menu, setMenu] = useState([]);
+    const [toppings, setToppings] = useState([]);
     const [orders, setOrders] = useState([]);
 
     const fetchToken = async() => {
@@ -29,6 +32,46 @@ const DataContextProvider = (props) => {
         );
     
         setToken((await res.json()).token);
+    };
+
+    const fetchStates = async() => {
+        if(token === null){
+            await fetchToken();
+        }
+
+        const res = await fetch(
+            `${process.env.REACT_APP_API_URL}Address/States`,
+            {
+                method: "GET",
+                headers: {
+                    'Accept': '*/*',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        );
+    
+        setStates(await res.json());
+    };
+
+    const fetchStreetTypes = async() => {
+        if(token === null){
+            await fetchToken();
+        }
+
+        const res = await fetch(
+            `${process.env.REACT_APP_API_URL}Address/StreetTypes`,
+            {
+                method: "GET",
+                headers: {
+                    'Accept': '*/*',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        );
+    
+        setStreetTypes(await res.json());
     };
 
     const fetchStores = async() => {
@@ -71,6 +114,26 @@ const DataContextProvider = (props) => {
         setMenu(await res.json());
     };
 
+    const fetchToppings = async() => {
+        if(token === null){
+            await fetchToken();
+        }
+
+        const res = await fetch(
+            `${process.env.REACT_APP_API_URL}Menu/Toppings`,
+            {
+                method: "GET",
+                headers: {
+                    'Accept': '*/*',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        );
+
+        setToppings(await res.json());
+    };
+
     const addStore = async(store) => {
         const res = await fetch(
             `${process.env.REACT_APP_API_URL}Stores`,
@@ -84,6 +147,7 @@ const DataContextProvider = (props) => {
                 body: JSON.stringify(store)
             }
         );
+        return res;
     };
 
     const addMenu = async(menu) => {
@@ -118,7 +182,19 @@ const DataContextProvider = (props) => {
         );
     };
 
-    const value = {stores, menu, fetchStores, fetchMenu };
+    const value = {
+        states, 
+        streetTypes, 
+        stores, 
+        menu, 
+        toppings,
+        fetchStates,
+        fetchStreetTypes,
+        fetchStores, 
+        fetchMenu,
+        fetchToppings,
+        addStore 
+    };
 
     return (
         <DataContext.Provider value={value}>

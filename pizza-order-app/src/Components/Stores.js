@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { useDataContext } from '../Contexts/DataContext';
+import StoreList from "./StoreList";
 
 const Stores = () => {
     
@@ -12,19 +13,10 @@ const Stores = () => {
 
     return (
         <div className="container">
-            <h1>
-                Stores
-            </h1>
-            <ul>
-            {
-                
-                stores.map(store => (
-                    <li key={store.id}>
-                        <Link className="nav-link" to={String(store.id)}>{store.name}</Link>
-                    </li>
-                ))
-            }
-            </ul>
+            <h2 className="mt-3 mb-5 text-center">Stores</h2>
+            <div className="row">
+                <StoreList stores={stores} />
+            </div>
             <Outlet />
         </div>
     );

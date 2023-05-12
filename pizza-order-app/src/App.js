@@ -1,13 +1,9 @@
 import './App.css';
-import { useEffect, useCallback } from "react";
-import useAuth from "./Hooks/useAuth";
-import useStores from "./Hooks/useStores";
-import { GetToken, GetStores } from "./Functions/DataFetch";
 import { Link, Route, Routes } from 'react-router-dom';
-import Menu from './Components/Menu';
 import Admin from './Components/Admin';
 import Stores from './Components/Stores';
-import Store from "./Components/Store";
+import Menu from "./Components/Menu";
+import MenuManagement from './Components/MenuManagement';
 
 
 function App() {
@@ -26,9 +22,11 @@ function App() {
       <div>
         <Routes>
           <Route path='/' element={<Stores />} >
-            <Route path='/:storeId' element={<Store />} />
+            <Route path='/:storeId' element={<Menu />} />
           </Route>
-          <Route path='/Admin' element={<Admin />} />
+          <Route path='/Admin' element={<Admin />} >
+            <Route path='/Admin/:storeId' element={<MenuManagement />} />
+          </Route>
         </Routes>
       </div>
     </div>
