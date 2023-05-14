@@ -7,7 +7,7 @@ import StoreList from "./StoreList";
 
 const Admin = () => {
     
-    const { stores, fetchStores } = useDataContext();
+    const { user, stores, fetchStores } = useDataContext();
 
     const [newStoreOpen, setNewStoreOpen] = useState(false);
 
@@ -20,9 +20,13 @@ const Admin = () => {
             <h2 className="mt-3 mb-5 text-center">Manage Stores</h2>
             <div className="row">
                 <StoreList stores={stores} />
-                <div className="col-10 col-lg-8 max-auto mb-5">
-                    <Button onClick={()=> setNewStoreOpen(true)}>Add New Store</Button>
-                </div>
+                {
+                    user.role === "GeneralManager" && (
+                        <div className="col-10 col-lg-8 max-auto mb-5">
+                            <Button onClick={()=> setNewStoreOpen(true)}>Add New Store</Button>
+                        </div>
+                    )
+                }
             </div>
             
             <NewStore isActive={newStoreOpen} handleClose={()=> setNewStoreOpen(false)} />

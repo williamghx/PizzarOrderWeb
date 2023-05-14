@@ -5,13 +5,72 @@ export const useDataContext = () => useContext(DataContext);
 
 
 const DataContextProvider = (props) => {
+    const [user, setUser] = useState(null);
+    const [loginError, setLoginError] = useState("");
     const [token, setToken] = useState(null);
     const [states, setStates] = useState([]);
     const [streetTypes, setStreetTypes] = useState([]);
     const [stores, setStores] = useState([]);
     const [menu, setMenu] = useState([]);
+    const [availablePizzas, setAvailablePizzas] = useState([]);
     const [toppings, setToppings] = useState([]);
-    const [orders, setOrders] = useState([]);
+
+    const login = async(userName, password) => {
+
+        const tokenRes = await fetch(
+            `${process.env.REACT_APP_API_URL}Auth`,
+            {
+                method: "POST",
+                headers: {
+                    'Accept': '*/*',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(
+                    {
+                        userName: userName,
+                        password: password
+                    }
+                )
+            }
+        );
+
+        if(tokenRes.status === 401)
+        {
+            console.log(tokenRes.status);
+            setLoginError("Incorrect user name or password");
+        }
+        else{
+            const jwt = (await tokenRes.json()).token;
+            setToken(jwt);
+            const userRes = await fetch(
+                `${process.env.REACT_APP_API_URL}Auth`,
+                {
+                    method: "GET",
+                    headers: {
+                        'Accept': '*/*',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${jwt}`
+                    }
+                }
+            );
+            console.log(token);
+            const loginUser = await userRes.json();
+            console.log(`user: ${loginUser.user}, role: ${loginUser.role}`);
+            if(!loginUser.role){
+                setLoginError("The logged-in user is unauthorised");
+            }
+            else{
+                setUser(loginUser);
+                setLoginError(null);
+            }  
+        }
+        
+    };
+
+    const logout = () => {
+        setUser(null);
+        setToken(null);
+    };
 
     const fetchToken = async() => {
         const res = await fetch(
@@ -114,6 +173,26 @@ const DataContextProvider = (props) => {
         setMenu(await res.json());
     };
 
+    const fetchAvailablePizzas = async(storeId) => {
+        if(token === null){
+            await fetchToken();
+        }
+
+        const res = await fetch(
+            `${process.env.REACT_APP_API_URL}Menu/AvailablePizzas/${storeId}`,
+            {
+                method: "GET",
+                headers: {
+                    'Accept': '*/*',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        );
+
+        setAvailablePizzas(await res.json());
+    }
+
     const fetchToppings = async() => {
         if(token === null){
             await fetchToken();
@@ -183,17 +262,25 @@ const DataContextProvider = (props) => {
     };
 
     const value = {
+        user,
+        loginError,
         states, 
         streetTypes, 
         stores, 
         menu, 
+        availablePizzas,
         toppings,
+        login,
+        logout,
         fetchStates,
         fetchStreetTypes,
         fetchStores, 
         fetchMenu,
+        fetchAvailablePizzas,
         fetchToppings,
-        addStore 
+        addStore,
+        addMenu,
+        modifyMenu 
     };
 
     return (

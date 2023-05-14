@@ -1,5 +1,13 @@
 import styled from 'styled-components';
 
+const LabelCell = ({ width, label }) => {
+    return (
+        <div className={`col-10 col-lg-${width} max-auto mb-3`}>
+            <StyledLabel>{label}</StyledLabel>
+        </div>
+    );
+};
+
 const TextCell = ({id, width, label, value, onChange, required, warning=""}) => {
     return (
         <div className={`form-group col-10 col-lg-${width} max-auto mb-3`}>
@@ -59,4 +67,4 @@ const StyledLabel = styled.label`
     font-weight:600;
 `;
 
-export {TextCell, SelectCell, SubmitCell};
+export {LabelCell, TextCell, SelectCell, SubmitCell};
