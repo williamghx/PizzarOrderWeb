@@ -1,4 +1,4 @@
-import { Modal, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 const MenuList = ({menu, buttonHandler, buttonText}) => {
     return (

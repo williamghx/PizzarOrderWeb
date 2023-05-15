@@ -11,14 +11,14 @@ const StoreList = ({stores}) => {
                             <div className="row card-body">
                                 <div className="col-sm-12">
                                     <h3 className="card-title mt-2 mb-3">
-                                        <Link className="nav-link" to={String(store.id)}>{store.name}</Link>
+                                        <Link data-testid="store-title-link" className="nav-link" to={String(store.id)}>{store.name}</Link>
                                     </h3>
-                                    <p className="card-text">
+                                    <p data-testid="store-address" className="card-text">
                                         {
                                             `${store.location.streetNo} ${store.location.streetName} ${store.location.streetType}, ${store.location.suburb}, ${store.location.state} ${store.location.postcode}`
                                         }
                                     </p>
-                                    <p className="card-text">
+                                    <p data-testid="store-phone" className="card-text">
                                         {
                                             store.phone
                                         }
